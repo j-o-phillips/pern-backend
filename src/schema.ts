@@ -1,4 +1,26 @@
 export const typeDefs = `#graphql
+     type Query {
+        users: [User]
+        userById(id: ID!): User
+        userByEmail(email: String!): User
+        settlements: [Settlement!]!
+        settlement(id: ID!): Settlement
+
+        building(id: ID!): Building
+    }
+
+    type Mutation {
+        addUser(user: addUserInput): User
+        updateUser(id: ID!, edits: editUserInput!): User
+        addSettlement(settlement: addSettlementInput!): Settlement
+        updateSettlement(id: ID!, edits: EditSettlementInput!): Settlement
+
+        createBuilding(building: BuildingInput!): Building
+
+        createGem(gem: GemInput!, settlement_id: ID!): Gem
+    }
+
+# User
     type User {
         id: ID!
         email: String!
@@ -6,6 +28,20 @@ export const typeDefs = `#graphql
         first_name: String!
         last_name: String! 
         settlement: Settlement
+    }
+
+    input addUserInput {
+        email: String!
+        password: String!
+        first_name: String!
+        last_name: String!
+    }
+
+    input editUserInput {
+        email: String
+        password: String
+        first_name: String
+        last_name: String
     }
 
     type Settlement {
@@ -24,43 +60,6 @@ export const typeDefs = `#graphql
         gems: [Gem!]
 
         user: User!
-    }
-
-    type Query {
-        users: [User]
-        userById(id: ID!): User
-        userByEmail(email: String!): User
-        settlements: [Settlement!]!
-        settlement(id: ID!): Settlement
-
-        building(id: ID!): Building
-       
-       
-    }
-
-    type Mutation {
-        addUser(user: addUserInput): User
-        updateUser(id: ID!, edits: editUserInput!): User
-        addSettlement(settlement: addSettlementInput!): Settlement
-        updateSettlement(id: ID!, edits: EditSettlementInput!): Settlement
-
-        createBuilding(building: BuildingInput!): Building
-
-        createGem(gem: GemInput!, settlement_id: ID!): Gem
-    }
-
-    input addUserInput {
-        email: String!
-        password: String!
-        first_name: String!
-        last_name: String!
-    }
-
-    input editUserInput {
-        email: String
-        password: String
-        first_name: String
-        last_name: String
     }
 
     input addSettlementInput {
