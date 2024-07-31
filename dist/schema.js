@@ -21,6 +21,9 @@ exports.typeDefs = `#graphql
         createBuilding(building: BuildingInput!): Building
 
         createGem(gem: GemInput!, settlement_id: ID!): Gem
+
+        createInventoryBlock(inventoryBlock: InventoryBlockInput!, user_id: ID!): InventoryBlock
+        createInventoryPotion(inventoryPotion: InventoryPotionInput!, user_id: ID!): InventoryPotion
     }
 
 # User
@@ -31,6 +34,8 @@ exports.typeDefs = `#graphql
         first_name: String!
         last_name: String! 
         settlement: Settlement
+
+        inventory: [InventoryItem]
     }
 
     input addUserInput {
@@ -47,6 +52,7 @@ exports.typeDefs = `#graphql
         last_name: String
     }
 
+# Settlement
     type Settlement {
         id: ID!
         user_id: ID!
@@ -119,6 +125,40 @@ exports.typeDefs = `#graphql
 
     }   
 
+# Items
+    interface InventoryItem {
+        id: ID!
+        user_id: ID!
+        type: String!
+        name: String!
+       
+    }
+
+    type InventoryBlock implements InventoryItem {
+        id: ID!
+        user_id: ID!
+        type: String!
+        name: String!
+        color: String!
+    }
+
+    input InventoryBlockInput {
+        name: String!
+
+        color: String!
+    }
+
+    type InventoryPotion implements InventoryItem {
+        id: ID!
+        user_id: ID!
+        type: String!
+        name: String!
+    }
+
+    input InventoryPotionInput {
+        name: String!
+    }
+#! Move gems to inventory
     type Gem {
         id: ID!
         settlement_id: ID!

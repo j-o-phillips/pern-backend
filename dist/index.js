@@ -31,6 +31,7 @@ const userService = __importStar(require("./services/user"));
 const settlementService = __importStar(require("./services/settlement"));
 const buildingService = __importStar(require("./services/building"));
 const gemService = __importStar(require("./services/gem"));
+const inventoryService = __importStar(require("./services/inventory"));
 const resolvers = {
     Query: {
         users() {
@@ -47,6 +48,20 @@ const resolvers = {
         settlement: (parent) => {
             //parent is the returned value of the parent resolver ie. the individual game
             return settlementService.fetchSettlementByUserId(parent.id);
+        },
+        inventory: (parent) => {
+            return inventoryService.fetchInventoryByUserId(parent.id);
+        },
+    },
+    InventoryItem: {
+        __resolveType: (obj) => {
+            if (obj.type === "block") {
+                return "InventoryBlock";
+            }
+            if (obj.type === "potion") {
+                return "InventoryPotion";
+            }
+            return null;
         },
     },
     Settlement: {
@@ -72,6 +87,12 @@ const resolvers = {
         },
         createGem(_parent, args) {
             return gemService.createGem(args.gem, args.settlement_id);
+        },
+        createInventoryBlock(_parent, args) {
+            return inventoryService.createInventoryBlock(args.inventoryBlock, args.user_id);
+        },
+        createInventoryPotion(_parent, args) {
+            return inventoryService.createInventoryPotion(args.inventoryPotion, args.user_id);
         },
     },
 };

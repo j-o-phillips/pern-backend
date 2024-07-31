@@ -9,6 +9,7 @@ import * as userService from "./services/user";
 import * as settlementService from "./services/settlement";
 import * as buildingService from "./services/building";
 import * as gemService from "./services/gem";
+import * as inventoryService from "./services/inventory";
 
 const resolvers = {
   Query: {
@@ -26,6 +27,21 @@ const resolvers = {
     settlement: (parent) => {
       //parent is the returned value of the parent resolver ie. the individual game
       return settlementService.fetchSettlementByUserId(parent.id);
+    },
+    inventory: (parent) => {
+      return inventoryService.fetchInventoryByUserId(parent.id);
+    },
+  },
+  InventoryItem: {
+    __resolveType: (obj) => {
+      if (obj.type === "block") {
+        return "InventoryBlock";
+      }
+
+      if (obj.type === "potion") {
+        return "InventoryPotion";
+      }
+      return null;
     },
   },
   Settlement: {
@@ -52,6 +68,18 @@ const resolvers = {
     },
     createGem(_parent, args) {
       return gemService.createGem(args.gem, args.settlement_id);
+    },
+    createInventoryBlock(_parent, args) {
+      return inventoryService.createInventoryBlock(
+        args.inventoryBlock,
+        args.user_id
+      );
+    },
+    createInventoryPotion(_parent, args) {
+      return inventoryService.createInventoryPotion(
+        args.inventoryPotion,
+        args.user_id
+      );
     },
   },
 };
