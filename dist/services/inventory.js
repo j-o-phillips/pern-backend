@@ -6,7 +6,6 @@ const fetchInventoryByUserId = async (id) => {
     const blocks = await knex("inventory_blocks").where("user_id", id);
     const potions = await knex("inventory_potions").where("user_id", id);
     const inventory = [...blocks, ...potions];
-    console.log(inventory);
     return inventory;
 };
 exports.fetchInventoryByUserId = fetchInventoryByUserId;

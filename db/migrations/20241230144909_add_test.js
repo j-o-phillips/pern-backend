@@ -3,12 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.createTable("inventory_blocks", (table) => {
+  return knex.schema.createTable("test", (table) => {
     table.increments("id").primary();
-    table.integer("user_id").unsigned().notNullable();
     table.string("name").notNullable();
-    table.string("color").notNullable();
-    table.foreign("user_id").references("users.id").onDelete("CASCADE");
+    table.timestamps(true, true);
   });
 };
 
@@ -17,5 +15,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable("inventory_blocks");
+  return knex.schema.dropTable("test");
 };
